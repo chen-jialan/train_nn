@@ -1,0 +1,7 @@
+The data cycle is based on the energy from nn potential
+
+this method is based on the NSDS_algorithm with the interface on ASE.
+
+you can see the test.py to test this methed. 
+
+and you can use energy and force with nn to judge if or not your data is in trainset.

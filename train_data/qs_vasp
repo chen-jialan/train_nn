@@ -1,0 +1,46 @@
+#!/bin/sh
+ 
+### Job name
+#PBS -N ch2@Crvac
+# Declare job non-rerunable
+#PBS -r n
+# Output files
+#PBS -e vaspjob.err
+#PBS -o vaspjob.out
+### Mail to user
+#PBS -m ae
+#PBS -q normal
+### Number of nodes (node property d510 wanted)
+#PBS -l nodes=1:ppn=24
+#PBS -l walltime=96:00:00
+ 
+ 
+# This job's working directory
+echo Time is `date`
+echo ""
+echo Directory is `pwd`
+echo Working directory is $PBS_O_WORKDIR
+cd $PBS_O_WORKDIR
+
+# Define number of processors
+export NPROCS=`wc -l < $PBS_NODEFILE`
+export N_NODE=`uniq $PBS_NODEFILE | wc -l`
+
+cat $PBS_NODEFILE >pbs.nodes
+
+echo This job has allocated $N_NODE nodes with $NPROCS processors
+echo This job has allocated $NPROCS processors
+echo Running on host `hostname`
+echo This jobs runs on the following processors:
+echo `cat $PBS_NODEFILE`
+echo
+
+# For middle 24cores
+export VASP_EXE=/home/scms/jluo/vasp.5.4.1/bin/vasp_std
+source /home/software/profile.d/mpi_intelmpi-2017.4.239.sh
+source /home/software/profile.d/mpi_openmpi-intel-2.1.2.sh
+
+#/home/software/mpi/openmpi/intel/2.1.2/bin/mpirun -np $NPROCS --hostfile $PBS_NODEFILE $VASP_EXE
+python3 test.py > q
+#sed -i "6d"  CONTCAR
+
